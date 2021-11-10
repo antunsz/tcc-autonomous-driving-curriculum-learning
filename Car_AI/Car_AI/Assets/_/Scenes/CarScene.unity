@@ -1917,7 +1917,7 @@ MonoBehaviour:
   FrontLeftWheel: {fileID: 30107815}
   BackRightWheel: {fileID: 390200247}
   BackLeftWheel: {fileID: 381967243}
-  trialTime: 15
+  trialTime: 13
   spawnPoint: {fileID: 29721530}
   motorForce: 2000
   brakeForce: 3000
@@ -1941,7 +1941,7 @@ MonoBehaviour:
   backLeftest: {fileID: 168817559}
   raycastIgnore:
     serializedVersion: 2
-    m_Bits: 4
+    m_Bits: 0
   sensorLength: 2
   frontSensorStartPos: {x: 0, y: 0.2, z: 0}
   frontSideSensorStartPos: 0.2
@@ -1959,7 +1959,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 19
+    VectorObservationSize: 15
     NumStackedVectorObservations: 1
     m_ActionSpec:
       m_NumContinuousActions: 0
@@ -1969,7 +1969,7 @@ MonoBehaviour:
     VectorActionSpaceType: 0
     hasUpgradedBrainParametersWithActionSpec: 1
   m_Model: {fileID: 0}
-  m_InferenceDevice: 3
+  m_InferenceDevice: 0
   m_BehaviorType: 0
   m_BehaviorName: AlphaRomeo
   TeamId: 0

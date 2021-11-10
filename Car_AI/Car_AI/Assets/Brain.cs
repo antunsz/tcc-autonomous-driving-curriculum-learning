@@ -124,11 +124,6 @@ public class Brain : Agent
     {
         Sensors();
         // Target and Agent positions
-        sensor.AddObservation(this.transform.localPosition);
-        sensor.AddObservation(this.FrontRightWheel.transform.localPosition);
-        sensor.AddObservation(this.FrontLeftWheel.transform.localPosition);
-        sensor.AddObservation(this.BackRightWheel.transform.localPosition);
-        sensor.AddObservation(this.BackLeftWheel.transform.localPosition);
         sensor.AddObservation(this.hitDirFront.collider.gameObject.layer);
         sensor.AddObservation(this.hitDirFrontRight.collider.gameObject.layer);
         sensor.AddObservation(this.hitDirFrontRightest.collider.gameObject.layer);
@@ -136,12 +131,18 @@ public class Brain : Agent
         sensor.AddObservation(this.hitDirFrontLeftest.collider.gameObject.layer);
         sensor.AddObservation(this.hitDirRight.collider.gameObject.layer);
         sensor.AddObservation(this.hitDirRightLeft.collider.gameObject.layer);
-        sensor.AddObservation(this.inRoad);
+        sensor.AddObservation(this.hitDirBack.collider.gameObject.layer);
+        sensor.AddObservation(this.hitDirBackRight.collider.gameObject.layer);
+        sensor.AddObservation(this.hitDirBackLeft.collider.gameObject.layer);
+        sensor.AddObservation(this.hitDirBackRightest.collider.gameObject.layer);
+        sensor.AddObservation(this.hitDirBackLeftest.collider.gameObject.layer);
         sensor.AddObservation(this.direction);
+        sensor.AddObservation(this.inRoad);
 
         // Agent velocity
+        Debug.Log("Velocidade: " + this.rBody.velocity.magnitude);
         sensor.AddObservation(rBody.velocity.x);
-        sensor.AddObservation(rBody.velocity.z);
+        //sensor.AddObservation(rBody.velocity.z);
     }
 
     private void Sensors(){
@@ -165,7 +166,6 @@ public class Brain : Agent
         Vector3 raycastDirFrontRight = frontRight.transform.position - sensorRoot.position;
         if (Physics.Raycast(sensorRoot.position, raycastDirFrontRight, out hit, sensorLength, ~raycastIgnore))
         {
-            Debug.Log(hit.collider.gameObject.name);
             hitDirFrontRight = hit;
             if (hit.collider.gameObject.layer == 6)
                 Debug.DrawLine(sensorRoot.position, hit.point, green, 1f);
@@ -294,7 +294,6 @@ public class Brain : Agent
     }
     public override void OnActionReceived(ActionBuffers actionBuffers)
     {
-        // Actions, size = 2
         Vector3 controlSignal = Vector3.zero;
 
         int control = actionBuffers.DiscreteActions[0];
@@ -306,6 +305,18 @@ public class Brain : Agent
             controlSignal.z = -1;
         }else if(control == 4){
             controlSignal.z = 1;
+        }else if(control == 5){
+            controlSignal.z = -1;
+            controlSignal.x = 1;
+        }else if(control == 6){
+            controlSignal.z = 1;
+            controlSignal.x = 1;
+        }else if(control == 7){
+            controlSignal.z = -1;
+            controlSignal.x = -1;
+        }else if(control == 8){
+            controlSignal.z = 1;
+            controlSignal.x = -1;
         }
 
         this.HandleMotor(controlSignal.x);
@@ -342,12 +353,12 @@ public class Brain : Agent
         if(frw_rua && flw_rua && brw_rua && blw_rua)
         {
             inRoad = true;
-            reward+=100;
-            SetReward(100);
+            //reward+=100;
+            //SetReward(100);
         }else{
             inRoad = false;
-            reward-=50;
-            SetReward(-50);
+            //reward-=50;
+            //SetReward(-50);
             inRoadCounter+=1;
         }
         //Debug.Log(inRoadCounter);
@@ -377,7 +388,16 @@ public class Brain : Agent
             discreteActionsOut[0] = 3;
         }else if(Input.GetKeyDown(KeyCode.RightArrow)){
             discreteActionsOut[0] = 4;
+        }else if(Input.GetKeyDown(KeyCode.RightArrow) & Input.GetKeyDown(KeyCode.UpArrow)){
+            discreteActionsOut[0] = 5;
+        }else if(Input.GetKeyDown(KeyCode.LeftArrow) & Input.GetKeyDown(KeyCode.UpArrow)){
+            discreteActionsOut[0] = 6;
+        }else if(Input.GetKeyDown(KeyCode.RightArrow) & Input.GetKeyDown(KeyCode.DownArrow)){
+            discreteActionsOut[0] = 7;
+        }else if(Input.GetKeyDown(KeyCode.LeftArrow) & Input.GetKeyDown(KeyCode.DownArrow)){
+            discreteActionsOut[0] = 8;
         }
+
 
         //this.HandleMotor(discreteActionsOut[0]);
         //this.HandleSteering(discreteActionsOut[]);
@@ -426,7 +446,4 @@ public class Brain : Agent
         wheelTransform.rotation = rot;
         wheelTransform.position = pos;
     }
-
-
 }
-
