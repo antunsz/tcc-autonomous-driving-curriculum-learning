@@ -1,12 +1,9 @@
 ScriptsOnlyBuild:
   usedScripts:
-    Assembly-CSharp-Editor.dll:
-    - ReadmeEditor
     Assembly-CSharp.dll:
     - Brain
     - CarControl
     - CarInfo
-    - Readme
     - Respawner
     - TerrainDetect
     - UIControl

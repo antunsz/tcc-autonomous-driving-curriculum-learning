@@ -349,6 +349,24 @@ public class Brain : Agent
         }
 
         // Reached target
+        if(this.hitDirFront.collider.gameObject.layer == 7 &&
+            this.hitDirFrontRight.collider.gameObject.layer == 7 &&
+            this.hitDirFrontRightest.collider.gameObject.layer == 7 &&
+            this.hitDirFrontLeft.collider.gameObject.layer == 7 &&
+            this.hitDirFrontLeftest.collider.gameObject.layer == 7 &&
+            this.hitDirRight.collider.gameObject.layer == 7 &&
+            this.hitDirRightLeft.collider.gameObject.layer == 7 &&
+            this.hitDirBack.collider.gameObject.layer == 7 &&
+            this.hitDirBackRight.collider.gameObject.layer == 7 &&
+            this.hitDirBackLeft.collider.gameObject.layer == 7 &&
+            this.hitDirBackRightest.collider.gameObject.layer == 7 &&
+            this.hitDirBackLeftest.collider.gameObject.layer == 7){
+            reward += 100;
+            SetReward(100);
+        }else{
+            reward -= 100;
+            SetReward(-100);
+        }
 
         if(frw_rua && flw_rua && brw_rua && blw_rua)
         {
