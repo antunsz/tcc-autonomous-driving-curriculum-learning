@@ -1917,7 +1917,7 @@ MonoBehaviour:
   FrontLeftWheel: {fileID: 30107815}
   BackRightWheel: {fileID: 390200247}
   BackLeftWheel: {fileID: 381967243}
-  trialTime: 13
+  trialTime: 200
   spawnPoint: {fileID: 29721530}
   motorForce: 2000
   brakeForce: 3000

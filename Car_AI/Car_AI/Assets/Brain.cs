@@ -20,7 +20,7 @@ public class Brain : Agent
     public Transform FrontLeftWheel;
     public Transform BackRightWheel;
     public Transform BackLeftWheel;
-    public float trialTime = 10;
+    public float trialTime = 10000;
 
     private float horizontalInput;
     private float verticalInput;
@@ -386,7 +386,7 @@ public class Brain : Agent
 
 
         // Fell off platform
-        if (this.transform.localPosition.y < 0 || inRoadCounter > 100 ||(elapsed >= trialTime))
+        if (this.transform.localPosition.y < 0 || inRoadCounter > 1000) //||(elapsed >= trialTime))
         {
             inRoadCounter = 0;
             elapsed = 0;
