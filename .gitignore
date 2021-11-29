@@ -1,2 +1,10 @@
 *.sw*
 _Meu*
+pista1/Car_AI/build/logs/*
+pista2/Car_AI/build/logs/*
+pista3/Car_AI/build/logs/*
+pista3 - Sensores/Car_AI/build/logs/*
+pista1/Car_AI/Library/PackageCache/*
+pista2/Car_AI/Library/PackageCache/*
+pista3/Car_AI/Library/PackageCache/*
+pista3 - Sensores/Car_AI/Library/PackageCache/*
