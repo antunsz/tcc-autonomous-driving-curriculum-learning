@@ -90,7 +90,7 @@ public class Brain : Agent
         guiStyle.fontSize = 25;
         guiStyle.normal.textColor = Color.white;
         GUI.BeginGroup (new Rect (10, 10, 250, 150));
-        GUI.Box (new Rect (0,0,140,140), "Stats", guiStyle);
+        GUI.Box (new Rect (0,0,140,140), "", guiStyle);
         GUI.Label(new Rect (10,25,200,30), string.Format("Time: {0:0.00}",elapsed), guiStyle);
         GUI.Label(new Rect (10,50,200,30), "Reward: "+reward, guiStyle);
         GUI.Label(new Rect (10,75,200,30), "inRoad: "+inRoad, guiStyle);
@@ -296,29 +296,30 @@ public class Brain : Agent
     public override void OnActionReceived(ActionBuffers actionBuffers)
     {
         Vector3 controlSignal = Vector3.zero;
-
+        
         int control = actionBuffers.DiscreteActions[0];
-        if(control == 1 ){
+        if(control == 1 ){         //frente
             controlSignal.x = 1;
-        }else if(control == 2){
+        }else if(control == 2){    //direita
+            controlSignal.z = 1;
+        }else if(control == 3){    //esquerda
+            controlSignal.z = -1;
+        }else if(control == 4){    // frente + direita
+            controlSignal.z = 1;
+            controlSignal.x = 1;
+        }else if(control == 5){   // frente + esquerda
+            controlSignal.z = -1;
+            controlSignal.x = 1;
+        }else if(control == 6){  //trás
             controlSignal.x = -1;
-        }else if(control == 3){
-            controlSignal.z = -1;
-        }else if(control == 4){
+        }else if(control == 7){//trás + direita
             controlSignal.z = 1;
-        }else if(control == 5){
-            controlSignal.z = -1;
-            controlSignal.x = 1;
-        }else if(control == 6){
-            controlSignal.z = 1;
-            controlSignal.x = 1;
-        }else if(control == 7){
-            controlSignal.z = -1;
             controlSignal.x = -1;
-        }else if(control == 8){
-            controlSignal.z = 1;
+        }else if(control == 8){   //trás + esquerda
+            controlSignal.z = -1;
             controlSignal.x = -1;
         }
+
 
         this.HandleMotor(controlSignal.x);
         this.HandleSteering(controlSignal.z);
@@ -350,52 +351,52 @@ public class Brain : Agent
 
         // Reached target
 
-        sensors_in_road =0;
-        if(this.hitDirFront.collider.gameObject.layer == 7){
-            sensors_in_road += 1;
-        }
-        if(this.hitDirFrontRight.collider.gameObject.layer == 7){
-            sensors_in_road += 1;
-        }
+        //sensors_in_road =0;
+        //if(this.hitDirFront.collider.gameObject.layer == 7){
+            //sensors_in_road += 1;
+        //}
+        //if(this.hitDirFrontRight.collider.gameObject.layer == 7){
+            //sensors_in_road += 1;
+        //}
 
-        if(this.hitDirFrontRightest.collider.gameObject.layer == 7){
-            sensors_in_road += 1;
-        }
-        if(this.hitDirFrontLeft.collider.gameObject.layer == 7){
-            sensors_in_road += 1;
-        }
+        //if(this.hitDirFrontRightest.collider.gameObject.layer == 7){
+            //sensors_in_road += 1;
+        //}
+        //if(this.hitDirFrontLeft.collider.gameObject.layer == 7){
+            //sensors_in_road += 1;
+        //}
 
-        if(this.hitDirFrontLeftest.collider.gameObject.layer == 7){
-            sensors_in_road += 1;
-        }
+        //if(this.hitDirFrontLeftest.collider.gameObject.layer == 7){
+            //sensors_in_road += 1;
+        //}
 
-        if(this.hitDirRight.collider.gameObject.layer == 7){
-            sensors_in_road += 1;
-        }
+        //if(this.hitDirRight.collider.gameObject.layer == 7){
+            //sensors_in_road += 1;
+        //}
 
-        if(this.hitDirRightLeft.collider.gameObject.layer == 7){
-            sensors_in_road += 1;
-        }
+        //if(this.hitDirRightLeft.collider.gameObject.layer == 7){
+            //sensors_in_road += 1;
+        //}
 
-        if(this.hitDirBack.collider.gameObject.layer == 7){
-            sensors_in_road += 1;
-        }
+        //if(this.hitDirBack.collider.gameObject.layer == 7){
+            //sensors_in_road += 1;
+        //}
 
-        if(this.hitDirBackRight.collider.gameObject.layer == 7){
-            sensors_in_road += 1;
-        }
+        //if(this.hitDirBackRight.collider.gameObject.layer == 7){
+            //sensors_in_road += 1;
+        //}
 
-        if(this.hitDirBackLeft.collider.gameObject.layer == 7){
-            sensors_in_road += 1;
-        }
+        //if(this.hitDirBackLeft.collider.gameObject.layer == 7){
+            //sensors_in_road += 1;
+        //}
 
-        if(this.hitDirBackRightest.collider.gameObject.layer == 7){
-            sensors_in_road += 1;
-        }
+        //if(this.hitDirBackRightest.collider.gameObject.layer == 7){
+            //sensors_in_road += 1;
+        //}
 
-        if(this.hitDirBackLeftest.collider.gameObject.layer == 7){
-            sensors_in_road += 1;
-        }
+        //if(this.hitDirBackLeftest.collider.gameObject.layer == 7){
+            //sensors_in_road += 1;
+        //}
 
         wheels_in_road = 0;
         if(frw_rua){
@@ -418,7 +419,7 @@ public class Brain : Agent
             inRoad = false;
             inRoadCounter+=1;
         }
-        reward_factor = reward_function(sensors_in_road, wheels_in_road);
+        reward_factor = reward_function(wheels_in_road);
         reward += reward_factor;
         SetReward(reward_factor);
         elapsed += Time.deltaTime;
@@ -438,18 +439,19 @@ public class Brain : Agent
 
     public override void Heuristic(in ActionBuffers actionsOut)
     {
+        
         var discreteActionsOut = actionsOut.DiscreteActions;
         if (Input.GetKeyDown(KeyCode.UpArrow)){
             discreteActionsOut[0] = 1;
-        }else if(Input.GetKeyDown(KeyCode.DownArrow)){
+        }else if(Input.GetKeyDown(KeyCode.RightArrow)){
             discreteActionsOut[0] = 2;
         }else if(Input.GetKeyDown(KeyCode.LeftArrow)){
             discreteActionsOut[0] = 3;
-        }else if(Input.GetKeyDown(KeyCode.RightArrow)){
-            discreteActionsOut[0] = 4;
         }else if(Input.GetKeyDown(KeyCode.RightArrow) & Input.GetKeyDown(KeyCode.UpArrow)){
-            discreteActionsOut[0] = 5;
+            discreteActionsOut[0] = 4;
         }else if(Input.GetKeyDown(KeyCode.LeftArrow) & Input.GetKeyDown(KeyCode.UpArrow)){
+            discreteActionsOut[0] = 5;
+        }else if(Input.GetKeyDown(KeyCode.DownArrow)){
             discreteActionsOut[0] = 6;
         }else if(Input.GetKeyDown(KeyCode.RightArrow) & Input.GetKeyDown(KeyCode.DownArrow)){
             discreteActionsOut[0] = 7;
@@ -506,7 +508,7 @@ public class Brain : Agent
         wheelTransform.position = pos;
     }
 
-    private float reward_function(int x, int w){
-        return (1000*x-1000*(12-x))+(1000*w-1000*(4-w));
+    private float reward_function(int w){
+        return 1000*w-1000*(4-w);
     }
 }

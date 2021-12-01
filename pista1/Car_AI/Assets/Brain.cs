@@ -88,7 +88,7 @@ public class Brain : Agent
         guiStyle.fontSize = 25;
         guiStyle.normal.textColor = Color.white;
         GUI.BeginGroup (new Rect (10, 10, 250, 150));
-        GUI.Box (new Rect (0,0,140,140), "Stats", guiStyle);
+        GUI.Box (new Rect (0,0,140,140), "", guiStyle);
         GUI.Label(new Rect (10,25,200,30), string.Format("Time: {0:0.00}",elapsed), guiStyle);
         GUI.Label(new Rect (10,50,200,30), "Reward: "+reward, guiStyle);
         GUI.Label(new Rect (10,75,200,30), "inRoad: "+inRoad, guiStyle);
@@ -341,8 +341,8 @@ public class Brain : Agent
             direction= -1;
         }
         else{
-            reward -= 10;
-            SetReward(-10);
+            reward -= 10000;
+            SetReward(-10000);
             direction=0;
         }
 
@@ -389,8 +389,9 @@ public class Brain : Agent
             inRoadCounter+=1;
         }
 
-        reward+=reward_fucntion(wheels_in_road);
-        SetReward(reward_fucntion(wheels_in_road));
+        float reward_factor = reward_function(wheels_in_road);
+        reward+=reward_factor;
+        SetReward(reward_factor);
         //Debug.Log(inRoadCounter);
         elapsed += Time.deltaTime;
 
@@ -477,7 +478,7 @@ public class Brain : Agent
         wheelTransform.position = pos;
     }
 
-    private float reward_fucntion( int w){
-        return 1000*w-1000*(w-4);
+    private float reward_function( int w){
+        return 1000*w-1000*(4-w);
     }
 }
