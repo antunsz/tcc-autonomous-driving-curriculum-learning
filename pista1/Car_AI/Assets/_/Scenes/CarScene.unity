@@ -891,7 +891,7 @@ MonoBehaviour:
   m_Grayscale: 0
   m_ObservationType: 0
   m_ObservationStacks: 1
-  m_Compression: 1
+  m_Compression: 0
 --- !u!4 &1258488649 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5763907738707479003, guid: 022f2f394cb6ec8439d4aed3beb55798, type: 3}
@@ -3933,7 +3933,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5327147131724768584}
   m_LocalRotation: {x: -0.5, y: -0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: 8.24, y: -0.00001, z: 6.45}
+  m_LocalPosition: {x: 8.24, y: 0.001, z: 6.45}
   m_LocalScale: {x: 2, y: 2, z: 0.5}
   m_Children: []
   m_Father: {fileID: 543450652052532409}

@@ -33,9 +33,7 @@ public class Brain : Agent
     private float elapsed=0;
     private float reward=0;
     private float distance = 0;
-    private float reward_factor = 0;
     private int wheels_in_road = 0;
-    private int sensors_in_road = 0;
 
     public GameObject spawnPoint;
 
@@ -296,7 +294,7 @@ public class Brain : Agent
     public override void OnActionReceived(ActionBuffers actionBuffers)
     {
         Vector3 controlSignal = Vector3.zero;
-        
+
         int control = actionBuffers.DiscreteActions[0];
         if(control == 1 ){         //frente
             controlSignal.x = 1;
@@ -319,7 +317,6 @@ public class Brain : Agent
             controlSignal.z = -1;
             controlSignal.x = -1;
         }
-
 
         this.HandleMotor(controlSignal.x);
         this.HandleSteering(controlSignal.z);
@@ -344,58 +341,30 @@ public class Brain : Agent
             direction= -1;
         }
         else{
-            reward -= 10;
-            SetReward(-10);
+            reward -= 10000;
+            SetReward(-10000);
             direction=0;
         }
 
         // Reached target
 
-        //sensors_in_road =0;
-        //if(this.hitDirFront.collider.gameObject.layer == 7){
-            //sensors_in_road += 1;
-        //}
-        //if(this.hitDirFrontRight.collider.gameObject.layer == 7){
-            //sensors_in_road += 1;
-        //}
-
-        //if(this.hitDirFrontRightest.collider.gameObject.layer == 7){
-            //sensors_in_road += 1;
-        //}
-        //if(this.hitDirFrontLeft.collider.gameObject.layer == 7){
-            //sensors_in_road += 1;
-        //}
-
-        //if(this.hitDirFrontLeftest.collider.gameObject.layer == 7){
-            //sensors_in_road += 1;
-        //}
-
-        //if(this.hitDirRight.collider.gameObject.layer == 7){
-            //sensors_in_road += 1;
-        //}
-
-        //if(this.hitDirRightLeft.collider.gameObject.layer == 7){
-            //sensors_in_road += 1;
-        //}
-
-        //if(this.hitDirBack.collider.gameObject.layer == 7){
-            //sensors_in_road += 1;
-        //}
-
-        //if(this.hitDirBackRight.collider.gameObject.layer == 7){
-            //sensors_in_road += 1;
-        //}
-
-        //if(this.hitDirBackLeft.collider.gameObject.layer == 7){
-            //sensors_in_road += 1;
-        //}
-
-        //if(this.hitDirBackRightest.collider.gameObject.layer == 7){
-            //sensors_in_road += 1;
-        //}
-
-        //if(this.hitDirBackLeftest.collider.gameObject.layer == 7){
-            //sensors_in_road += 1;
+        //if(this.hitDirFront.collider.gameObject.layer == 7 &&
+            //this.hitDirFrontRight.collider.gameObject.layer == 7 &&
+            //this.hitDirFrontRightest.collider.gameObject.layer == 7 &&
+            //this.hitDirFrontLeft.collider.gameObject.layer == 7 &&
+            //this.hitDirFrontLeftest.collider.gameObject.layer == 7 &&
+            //this.hitDirRight.collider.gameObject.layer == 7 &&
+            //this.hitDirRightLeft.collider.gameObject.layer == 7 &&
+            //this.hitDirBack.collider.gameObject.layer == 7 &&
+            //this.hitDirBackRight.collider.gameObject.layer == 7 &&
+            //this.hitDirBackLeft.collider.gameObject.layer == 7 &&
+            //this.hitDirBackRightest.collider.gameObject.layer == 7 &&
+            //this.hitDirBackLeftest.collider.gameObject.layer == 7){
+            //reward += 1000;
+            //SetReward(1000);
+        //}else{
+            //reward -= 1000;
+            //SetReward(-1000);
         //}
 
         wheels_in_road = 0;
@@ -419,9 +388,11 @@ public class Brain : Agent
             inRoad = false;
             inRoadCounter+=1;
         }
-        reward_factor = reward_function(wheels_in_road);
-        reward += reward_factor;
+
+        float reward_factor = reward_function(wheels_in_road);
+        reward+=reward_factor;
         SetReward(reward_factor);
+        //Debug.Log(inRoadCounter);
         elapsed += Time.deltaTime;
 
 
@@ -430,6 +401,8 @@ public class Brain : Agent
         // Fell off platform
         if (this.transform.localPosition.y < 0 || inRoadCounter > 1000) //||(elapsed >= trialTime))
         {
+            reward -= 10000;
+            SetReward(-100000);
             inRoadCounter = 0;
             elapsed = 0;
             Debug.Log("Finalizado");
@@ -439,7 +412,6 @@ public class Brain : Agent
 
     public override void Heuristic(in ActionBuffers actionsOut)
     {
-        
         var discreteActionsOut = actionsOut.DiscreteActions;
         if (Input.GetKeyDown(KeyCode.UpArrow)){
             discreteActionsOut[0] = 1;
@@ -508,7 +480,7 @@ public class Brain : Agent
         wheelTransform.position = pos;
     }
 
-    private float reward_function(int w){
-        return 1000*w-1000*(4-w);
+    private float reward_function( int w){
+        return 1*w-1*(4-w);
     }
 }

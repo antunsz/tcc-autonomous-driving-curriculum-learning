@@ -792,10 +792,10 @@ MonoBehaviour:
   m_SensorName: CameraSensor
   m_Width: 84
   m_Height: 84
-  m_Grayscale: 0
+  m_Grayscale: 1
   m_ObservationType: 0
   m_ObservationStacks: 1
-  m_Compression: 1
+  m_Compression: 0
 --- !u!4 &1258488649 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5763907738707479003, guid: 022f2f394cb6ec8439d4aed3beb55798, type: 3}

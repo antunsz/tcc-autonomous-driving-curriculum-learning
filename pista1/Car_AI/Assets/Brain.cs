@@ -401,6 +401,8 @@ public class Brain : Agent
         // Fell off platform
         if (this.transform.localPosition.y < 0 || inRoadCounter > 1000) //||(elapsed >= trialTime))
         {
+            reward -= 10000;
+            SetReward(-100000);
             inRoadCounter = 0;
             elapsed = 0;
             Debug.Log("Finalizado");
@@ -479,6 +481,6 @@ public class Brain : Agent
     }
 
     private float reward_function( int w){
-        return 1000*w-1000*(4-w);
+        return 1*w-1*(4-w);
     }
 }
